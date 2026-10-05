@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WanderIQ — Your Journey, Intelligently Planned.</title>
+    <meta name="description" content="WanderIQ helps you plan intelligent, personalized trips with real places, smart recommendations, and interactive maps.">
+    
+    <!-- Google Fonts: Poppins (Clean. Modern. Friendly.) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Leaflet CSS for OpenStreetMap -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    
+    <!-- Custom Stylesheet matching Reference Design -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-theme">
+
+    <!-- Top Global Header / Navigation -->
+    <header class="top-nav">
+        <div class="nav-inner">
+            <!-- Brand Logo -->
+            <a href="#" class="brand-logo" id="navLogo">
+                <div class="logo-compass-icon">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10" stroke="#10b981" stroke-width="2"/>
+                        <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" fill="#10b981" stroke="#0d1b2a" stroke-width="1"/>
+                    </svg>
+                </div>
+                <div class="brand-text-wrap">
+                    <span class="brand-title">Wander<span class="brand-accent">IQ</span><span class="brand-sparkle">✦</span></span>
+                </div>
+            </a>
+
+            <!-- Center Navigation Links -->
+            <nav class="nav-links">
+                <a href="#heroSection" class="nav-link active">Home</a>
+                <a href="#" class="nav-link" id="navMyTripsBtn">My Trips</a>
+                <a href="#resultsWorkspace" class="nav-link" id="navExploreBtn">Explore</a>
+                <a href="#" class="nav-link" id="navWeatherBtn">Weather</a>
+            </nav>
+
+            <!-- Right CTA Button -->
+            <div class="nav-right">
+                <button type="button" class="btn-plan-trip" id="quickPlanBtn">
+                    Plan a Trip
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section with Scenic Mountain/Hot Air Balloon Background -->
+    <section class="hero-banner-section" id="heroSection">
+        <div class="hero-overlay"></div>
+        
+        <div class="hero-container">
+            <div class="hero-text-block">
+                <h1 class="hero-headline">
+                    Your Journey,<br>
+                    <span class="hero-highlight">Intelligently Planned.</span>
+                </h1>
+                <p class="hero-subheadline">
+                    AI-powered itineraries, real places, and memorable experiences.
+                </p>
+            </div>
+
+            <!-- Floating Planner Bar Card -->
+            <div class="planner-bar-card">
+                <form id="travelForm" class="planner-bar-form">
+                    
+                    <!-- Destination Field -->
+                    <div class="bar-field field-destination">
+                        <span class="field-icon">📍</span>
+                        <div class="field-content">
+                            <label for="destination">Destination</label>
+                            <input 
+                                type="text" 
+                                id="destination" 
+                                name="destination" 
+                                placeholder="e.g. Kanyakumari" 
+                                value="Kanyakumari"
+                                required 
+                                autocomplete="off"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="bar-divider"></div>
+
+                    <!-- Days Field -->
+                    <div class="bar-field field-days">
+                        <span class="field-icon">🗓️</span>
+                        <div class="field-content">
+                            <label for="days">Days</label>
+                            <input 
+                                type="number" 
+                                id="days" 
+                                name="days" 
+                                min="1" 
+                                max="30" 
+                                value="3" 
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <div class="bar-divider"></div>
+
+                    <!-- Travelers Field -->
+                    <div class="bar-field field-travelers">
+                        <span class="field-icon">👤</span>
+                        <div class="field-content">
+                            <label for="travelers">Travelers</label>
+                            <input 
+                                type="number" 
+                                id="travelers" 
+                                name="travelers" 
+                                min="1" 
+                                max="20" 
+                                value="2" 
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <div class="bar-divider"></div>
+
+                    <!-- Budget Field -->
+                    <div class="bar-field field-budget">
+                        <span class="field-icon">💰</span>
+                        <div class="field-content">
+                            <label for="budget">Budget</label>
+                            <div class="budget-row">
+                                <span class="rupee-sign">₹</span>
+                                <input 
+                                    type="number" 
+                                    id="budget" 
+                                    name="budget" 
+                                    min="1000" 
+                                    step="500" 
+                                    value="10000" 
+                                    required
+                                >
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bar-divider"></div>
+
+                    <!-- Interests Field -->
+                    <div class="bar-field field-interests">
+                        <span class="field-icon">🎨</span>
+                        <div class="field-content">
+                            <label for="interestsInput">Interests</label>
+                            <input 
+                                type="text" 
+                                id="interestsInput" 
+                                name="interests" 
+                                placeholder="Beaches, History, Food" 
+                                value="Beaches, History, Food"
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="bar-submit-wrap">
+                        <button type="submit" id="submitBtn" class="btn-generate-trip">
+                            <span class="btn-plus">+</span>
+                            <span>Generate My Trip</span>
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+
+            <!-- 4 Value Pillar Badges -->
+            <div class="value-pillars-row">
+                <div class="pillar-badge">
+                    <div class="pillar-icon-wrap icon-purple">🤖</div>
+                    <div class="pillar-info">
+                        <span class="pillar-title">AI Itinerary</span>
+                        <span class="pillar-desc">Smart & Personalized</span>
+                    </div>
+                </div>
+
+                <div class="pillar-badge">
+                    <div class="pillar-icon-wrap icon-green">📍</div>
+                    <div class="pillar-info">
+                        <span class="pillar-title">Real Places</span>
+                        <span class="pillar-desc">Verified Locations</span>
+                    </div>
+                </div>
+
+                <div class="pillar-badge">
+                    <div class="pillar-icon-wrap icon-blue">🗺️</div>
+                    <div class="pillar-info">
+                        <span class="pillar-title">Interactive Map</span>
+                        <span class="pillar-desc">Explore with Ease</span>
+                    </div>
+                </div>
+
+                <div class="pillar-badge">
+                    <div class="pillar-icon-wrap icon-gold">⛅</div>
+                    <div class="pillar-info">
+                        <span class="pillar-title">Weather Info</span>
+                        <span class="pillar-desc">Stay Prepared</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Loading State View -->
+    <section id="loadingSection" class="loading-container hidden">
+        <div class="loading-card-glass">
+            <div class="spinner-ring"></div>
+            <h3 class="loading-heading">Designing Your WanderIQ Itinerary...</h3>
+            <p class="loading-sub">Groq AI is building activities & OpenStreetMap is verifying coordinates.</p>
+            <div class="loading-bar-track">
+                <div class="loading-bar-progress" id="loadingBarFill"></div>
+            </div>
+            <ul class="loading-status-list">
+                <li id="lStep-1" class="active"><span>●</span> Understanding travel preferences & budget</li>
+                <li id="lStep-2"><span>○</span> Querying OpenStreetMap for real landmarks</li>
+                <li id="lStep-3"><span>○</span> Structuring realistic daily schedules</li>
+                <li id="lStep-4"><span>○</span> Verifying coordinates & pin locations</li>
+                <li id="lStep-5"><span>○</span> Finalizing trip & generating map markers</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Main Dashboard Workspace (Matching Reference Bottom Screen) -->
+    <section class="dashboard-workspace" id="resultsWorkspace">
+        <div class="dashboard-container">
+            
+            <!-- Left Navigation Sidebar -->
+            <aside class="dashboard-sidebar">
+                <div class="sidebar-brand">
+                    <div class="logo-compass-icon mini">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor">
+                            <circle cx="12" cy="12" r="10" stroke="#10b981" stroke-width="2"/>
+                            <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" fill="#10b981" stroke="#0d1b2a"/>
+                        </svg>
+                    </div>
+                    <span class="brand-title-sidebar">Wander<span class="brand-accent">IQ</span></span>
+                </div>
+
+                <nav class="sidebar-menu">
+                    <button type="button" class="sidebar-item active" id="sbOverview">
+                        <span class="sb-icon">🏠</span>
+                        <span class="sb-text">Overview</span>
+                    </button>
+                    <button type="button" class="sidebar-item" id="sbItinerary">
+                        <span class="sb-icon">📋</span>
+                        <span class="sb-text">Itinerary</span>
+                    </button>
+                    <button type="button" class="sidebar-item" id="sbMap">
+                        <span class="sb-icon">🗺️</span>
+                        <span class="sb-text">Map</span>
+                    </button>
+                    <button type="button" class="sidebar-item" id="sbWeather">
+                        <span class="sb-icon">⛅</span>
+                        <span class="sb-text">Weather</span>
+                    </button>
+                    <button type="button" class="sidebar-item" id="sbMyTrips">
+                        <span class="sb-icon">📁</span>
+                        <span class="sb-text">My Trips</span>
+                    </button>
+                    <button type="button" class="sidebar-item" id="sbSettings">
+                        <span class="sb-icon">⚙️</span>
+                        <span class="sb-text">Settings</span>
+                    </button>
+                </nav>
+
+                <!-- Sidebar User Profile -->
+                <div class="sidebar-user-profile">
+                    <div class="user-avatar">
+                        <span>👤</span>
+                    </div>
+                    <div class="user-details">
+                        <span class="user-name">Arun Kumar</span>
+                        <span class="user-email">arun@example.com</span>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Itinerary Content Panel -->
+            <main class="dashboard-main-content">
+                
+                <!-- Destination Header -->
+                <div class="dashboard-header-row">
+                    <div class="dest-meta-info">
+                        <h2 class="dest-main-title" id="dashDestTitle">
+                            Kanyakumari, Tamil Nadu <span class="dest-pin-icon">📍</span>
+                        </h2>
+                        <div class="dest-quick-stats" id="dashDestStats">
+                            <span>3 Days Trip</span> • <span>2 Travelers</span> • <span>₹10,000 Budget</span>
+                        </div>
+                        <p class="dest-summary-text" id="dashDestSummary">
+                            Explore the southern tip of India with stunning beaches, historic landmarks, and local flavors.
+                        </p>
+                    </div>
+
+                    <div class="dest-action-badges">
+                        <div class="trip-saved-badge">
+                            <span class="check-icon">✓</span> Trip Saved
+                        </div>
+                        <button type="button" class="btn-copy-itinerary" id="dashCopyBtn" title="Copy full plan">
+                            📋 Copy Plan
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Two-Column Workspace: Left Itinerary List / Right Map -->
+                <div class="dashboard-split-grid">
+                    
+                    <!-- Left: Day Filter Tabs & Sightseeing Place Cards -->
+                    <div class="split-left-column">
+                        
+                        <!-- Day Switcher Pills -->
+                        <div class="day-filter-pills" id="dashDayPills">
+                            <button type="button" class="day-pill active">Day 1</button>
+                            <button type="button" class="day-pill">Day 2</button>
+                            <button type="button" class="day-pill">Day 3</button>
+                        </div>
+
+                        <!-- Place Cards List -->
+                        <div class="place-cards-container" id="dashPlaceCardsList">
+                            <!-- Dynamic Cards Injected Here -->
+                        </div>
+
+                        <!-- Travel Tips Box -->
+                        <div class="travel-tips-card">
+                            <h4 class="tips-heading">Travel Tips</h4>
+                            <ul class="tips-bullet-list" id="dashTipsList">
+                                <li>Carry light cotton clothes and stay hydrated.</li>
+                                <li>Best time to visit is October to March.</li>
+                            </ul>
+                        </div>
+
+                    </div>
+
+                    <!-- Right: Interactive Map Panel -->
+                    <div class="split-right-column">
+                        <div class="map-card-wrapper">
+                            
+                            <!-- Map Header Controls -->
+                            <div class="map-top-controls">
+                                <div class="map-view-toggle">
+                                    <button type="button" class="map-toggle-btn active" id="btnMapLayer">Map</button>
+                                    <button type="button" class="map-toggle-btn" id="btnSatelliteLayer">Satellite</button>
+                                </div>
+                            </div>
+
+                            <!-- Leaflet Map Container -->
+                            <div id="dashboardMap" class="leaflet-map-view"></div>
+
+                            <!-- Map Bottom Legend -->
+                            <div class="map-legend-bar">
+                                <div class="legend-item">
+                                    <span class="legend-dot green"></span>
+                                    <span class="legend-text">Verified Location</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-dot gray"></span>
+                                    <span class="legend-text">Unverified Location</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </main>
+
+        </div>
+    </section>
+
+    <!-- My Trips (History) Modal -->
+    <div id="historyModal" class="modal-backdrop hidden">
+        <div class="modal-window">
+            <div class="modal-header-row">
+                <div class="modal-title-group">
+                    <span class="modal-icon">🗂️</span>
+                    <div>
+                        <h3 class="modal-heading">Saved WanderIQ Trips</h3>
+                        <p class="modal-subheading">View, load, or manage your generated itineraries</p>
+                    </div>
+                </div>
+                <button type="button" id="closeModalBtn" class="btn-close-modal">&times;</button>
+            </div>
+            <div class="modal-content-list" id="savedTripsList">
+                <p class="empty-msg">No saved trips found yet. Start planning!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast-notification hidden"></div>
+
+    <!-- Leaflet OpenStreetMap JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    
+    <!-- Application Logic -->
+    <script src="script.js"></script>
+</body>
+</html>
